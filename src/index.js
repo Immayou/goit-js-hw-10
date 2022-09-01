@@ -23,9 +23,13 @@ return fetch(`https://restcountries.com/v3.1/name/${name}?fields=name,capital,po
 .then(response => {return response.json()})
 }
 
-function createCountriesHtmlList ({name, capital, population, flags, languages}) {
+function createCountriesHtmlList (countries) {
+countries.map(({name, capital, population, flags, languages}) => 
+{const template = 
+`<li class="countries-item"><svg width="40" height="40"><use href=${flags.svg}></use></svg><span>${name.official}</span></li>`
+    countriesListShown.insertAdjacentHTML('beforeend', template)})
 
-countriesListShown.insertAdjacentHTML('beforeend', `${name, capital, population, flags, languages}`)
+
 }
 
 

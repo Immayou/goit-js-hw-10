@@ -9,7 +9,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #212121;
   line-height: 1.5;
-  background: linear-gradient(70deg, white, black);
+  background: linear-gradient(white, 30%, rgb(13, 13, 13));
+  text-align: center;
+  height: 100vh;
+  padding-top: 50px;
+  padding-bottom: auto;
 }
 
 #search-box {

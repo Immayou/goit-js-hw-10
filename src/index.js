@@ -16,9 +16,9 @@ clearShownInfo()
 
 let inputValue = evt.target.value.trim()
 
-if (inputValue !== '') {
-    fetchCountries(inputValue).then(createCountriesHtmlList).catch(notFoundCountry)
-}
+if (inputValue !== '') {  
+    fetchCountries(inputValue).then(createCountriesHtmlList).catch(error => {
+        console.log(error)})}
 }
 
 function createCountriesHtmlList (countries) {
@@ -32,7 +32,9 @@ if (countriesListShown.children.length === 1) {
     createCountriesHtmlInfo (countries) 
 } else if (countriesListShown.children.length > 10) {
     Notiflix.Notify.info("Too many matches found. Please enter a more specific name.")
-} 
+} else if (countriesListShown.children.length === 0) {
+    Notiflix.Notify.failure('Oops, there is no country with that name')
+}
 }
 
 function createCountriesHtmlInfo (country) {
@@ -48,9 +50,7 @@ function clearShownInfo () {
     countriesListShown.innerHTML = ''
 }
 
-function notFoundCountry () {
-    Notiflix.Notify.failure("Oops, there is no country with that name")
-}
+
 
 
     

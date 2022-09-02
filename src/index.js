@@ -1,7 +1,7 @@
 import './css/styles.css';
 import debounce from "lodash.debounce";
-import handlebars from "handlebars";
 import Notiflix from "notiflix";
+import { fetchCountries } from "./fetchCountries"
 
 const DEBOUNCE_DELAY = 300;
 const countryInput = document.querySelector('#search-box')
@@ -12,28 +12,21 @@ countryInput.addEventListener('input', debounce(onSearchCountryInput, DEBOUNCE_D
 
 function onSearchCountryInput(evt) {
 evt.preventDefault()
-const inputValue = evt.target.value.trim()
+clearShownInfo()
+
+let inputValue = evt.target.value.trim()
 
 if (inputValue !== '') {
     fetchCountries(inputValue).then(createCountriesHtmlList).catch(notFoundCountry)
-} else {
-    countriesInfoShown.innerHTML = ''
-    countriesListShown.innerHTML = ''
 }
-}
-
-function fetchCountries(name) {
-return fetch(`https://restcountries.com/v3.1/name/${name}?fields=name,capital,population,flags,languages`)
-.then(response => {return response.json()})
 }
 
 function createCountriesHtmlList (countries) {
-countries.map(({name, capital, population, flags, languages}) => {
-    const templateCountry = 
-    `<li class="country-item">
+const templateCountry = countries.map(({name, capital, population, flags, languages}) => {
+    return `<li class="country-item">
     <img width="40" height="30" src=${flags.svg} alt="Flag" class="image-flag">
-    <span>${name.official}</span></li>`
-    countriesListShown.insertAdjacentHTML('beforeend', templateCountry)})
+    <span>${name.official}</span></li>`}).join('')
+    countriesListShown.insertAdjacentHTML('beforeend', templateCountry)
 
 if (countriesListShown.children.length === 1) {
     createCountriesHtmlInfo (countries) 
@@ -42,7 +35,6 @@ if (countriesListShown.children.length === 1) {
 } 
 }
 
-
 function createCountriesHtmlInfo (country) {
     const templateInfo = 
     `<p class="country-info">Capital: ${country[0].capital}</p>
@@ -50,7 +42,12 @@ function createCountriesHtmlInfo (country) {
      <p class="country-info">Languages: ${Object.values(country[0].languages)}</p>`
     countriesInfoShown.insertAdjacentHTML('beforeend', templateInfo)
     }
-    
+
+function clearShownInfo () {
+    countriesInfoShown.innerHTML = ''
+    countriesListShown.innerHTML = ''
+}
+
 function notFoundCountry () {
     Notiflix.Notify.failure("Oops, there is no country with that name")
 }

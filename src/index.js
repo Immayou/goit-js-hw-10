@@ -33,7 +33,7 @@ if (countriesListShown.children.length === 1) {
 } else if (countriesListShown.children.length > 10) {
     Notiflix.Notify.info("Too many matches found. Please enter a more specific name.")
 } else if (countriesListShown.children.length === 0) {
-    Notiflix.Notify.failure('Oops, there is no country with that name')
+    Notiflix.Notify.failure("Oops, there is no country with that name.")
 }
 }
 

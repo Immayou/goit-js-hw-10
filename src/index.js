@@ -26,11 +26,13 @@ const templateCountry = countries.map(({name, capital, population, flags, langua
     <img width="40" height="30" src=${flags.svg} alt="Flag" class="image-flag">
     <span>${name.official}</span></li>`}).join('')
     countriesListShown.insertAdjacentHTML('beforeend', templateCountry)
+    console.log(1)
 
 if (countriesListShown.children.length === 1) {
     createCountriesHtmlInfo (countries) 
 } else if (countriesListShown.children.length > 10) {
     Notiflix.Notify.info("Too many matches found. Please enter a more specific name.")
+    clearShownInfo()
 } else if (countriesListShown.children.length === 0) {
     clearShownInfo()
 }

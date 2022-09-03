@@ -17,25 +17,28 @@ clearShownInfo()
 let inputValue = evt.target.value.trim()
 
 if (inputValue !== '') {  
-    fetchCountries(inputValue).then(createCountriesHtmlList).catch(makeFailureRequestMessage)}
+    fetchCountries(inputValue).then(checkSpecificityOfRequest).catch(makeFailureRequestMessage)}
+}
+
+function checkSpecificityOfRequest (countries) {
+
+if (countries.length === 1) {
+    createCountriesHtmlList (countries)
+    createCountriesHtmlInfo (countries) 
+} else if (countries.length > 10) {
+    Notiflix.Notify.info("Too many matches found. Please enter a more specific name.")
+    clearShownInfo()
+} else if (countries.length === 0) {
+    clearShownInfo()
+}
 }
 
 function createCountriesHtmlList (countries) {
-const templateCountry = countries.map(({name, capital, population, flags, languages}) => {
-    return `<li class="country-item">
-    <img width="40" height="30" src=${flags.svg} alt="Flag" class="image-flag">
-    <span>${name.official}</span></li>`}).join('')
-    countriesListShown.insertAdjacentHTML('beforeend', templateCountry)
-    console.log(1)
-
-if (countriesListShown.children.length === 1) {
-    createCountriesHtmlInfo (countries) 
-} else if (countriesListShown.children.length > 10) {
-    Notiflix.Notify.info("Too many matches found. Please enter a more specific name.")
-    clearShownInfo()
-} else if (countriesListShown.children.length === 0) {
-    clearShownInfo()
-}
+    const templateCountry = countries.map(({name, capital, population, flags, languages}) => {
+        return `<li class="country-item">
+        <img width="40" height="30" src=${flags.svg} alt="Flag" class="image-flag">
+        <span>${name.official}</span></li>`}).join('')
+        countriesListShown.insertAdjacentHTML('beforeend', templateCountry)
 }
 
 function createCountriesHtmlInfo (country) {
